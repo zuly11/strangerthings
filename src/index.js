@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import React, { useState, useEffect } from "react";
 import { HashRouter, Routes, Route, Link } from "react-router-dom";
-import Nav from "./Nav";
+//import Nav from "./Nav";
 
 const ORI_URL = "https://strangers-things.herokuapp.com/api/";
 const COHORT =
@@ -17,7 +17,7 @@ const Posts = (props) => {
           console.log(post);
           return (
             <li key={post.author._id}>
-              <Link to={`/posts/${post.id}`}>{post.title}</Link>
+              <Link to={`/posts/${post.author._id}`}>{post.title}</Link>
             </li>
           );
         })}
@@ -32,6 +32,28 @@ const App = () => {
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      fetch(
+        "https://strangers-things.herokuapp.com/api/2209-FTB-ET-WEB-AM/users/me",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          const user = result.data;
+          setUser(user);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
 
   const login = (ev) => {
     ev.preventDefault();
@@ -53,13 +75,23 @@ const App = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        if (!result.success) {
-          throw result.error;
-        }
         const token = result.data.token;
         window.localStorage.setItem("token", token);
-
-        console.log(result);
+        fetch(
+          "https://strangers-things.herokuapp.com/api/2209-FTB-ET-WEB-AM/users/me",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            const user = result.data;
+            setUser(user);
+          })
+          .catch(console.error);
       })
       .catch((err) => console.log(err));
   };
@@ -151,19 +183,6 @@ const App = () => {
     </div>
   );
 };
-
-/*useEffect(()=>{
-const token = result.data.token;
-window.localStorage.getItem('token', token);
-if(token){
-  fetch("https://strangers-things.herokuapp.com/api/2209-FTB-ET-WEB-AM/users/me", {
-    headers: {
-
-    },
-}
-),
-
-[]);*/
 
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 root.render(
