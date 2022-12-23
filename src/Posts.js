@@ -10,14 +10,50 @@ const Posts = (props) => {
         {posts.map((post) => {
           console.log(post);
           return (
-            <li key={post.author._id}>
-              <Link to={`/posts/${post.id}`}>{post.title}</Link>
-            </li>
+            <ul className="cards">
+              <li
+                key={post._id}
+                className={post.isAuthor ? "myPost" : "singlePost"}
+              >
+                <Link to={`/posts/${post.id}`} className="link">
+                  <h3>{post.title}</h3>
+                </Link>
+                <p>{post.description}</p>
+                <p>Price: {post.price}</p>
+                <p>Location: {post.location}</p>
+                <p>Date Posted: {post.updatedAt}</p>
+                <p>Author: {post.author.username}</p>
+                {post.isAuthor ? <button>Edit</button> : null}
+              </li>
+            </ul>
           );
         })}
       </ul>
     </div>
   );
+};
+
+const createPost = () => {
+  fetch("https://strangers-things.herokuapp.com/api/2209-FTB-ET-WEB-AM/posts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      post: {
+        title: "Finger Hugs and/or Smothering Bear Hugs",
+        description: "To whomever needs a hug",
+        price: "priceless",
+        willDeliver: true,
+      },
+    }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+    })
+    .catch(console.error);
 };
 
 export default Posts;
