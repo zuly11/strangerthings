@@ -1,11 +1,13 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
+import { createPost } from "./Create";
 
 const Posts = (props) => {
   const posts = props.posts;
   return (
     <div>
       <h1>Posts</h1>
+      <button onClick={createPost}>Create Post</button>
       <ul>
         {posts.map((post) => {
           console.log(post);
@@ -33,7 +35,7 @@ const Posts = (props) => {
   );
 };
 
-const createPost = () => {
+/*export const createPost = (token) => {
   fetch("https://strangers-things.herokuapp.com/api/2209-FTB-ET-WEB-AM/posts", {
     method: "POST",
     headers: {
@@ -54,6 +56,6 @@ const createPost = () => {
       console.log(result);
     })
     .catch(console.error);
-};
+};*/
 
 export default Posts;
