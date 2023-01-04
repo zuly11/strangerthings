@@ -1,4 +1,4 @@
-export const createPost = ({
+export const createPost = async ({
   token,
   title,
   description,
@@ -13,7 +13,7 @@ export const createPost = ({
     },
     body: JSON.stringify({
       post: {
-        title: "Finger Hugs and/or Smothering Bear Hugs",
+        title: "Finger Hugs and Smothering Bear Hugs",
         description: "To whomever needs a hug",
         price: "priceless",
         willDeliver: true,

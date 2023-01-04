@@ -6,6 +6,9 @@ import Posts from "./Posts";
 import Register from "./Register";
 import Login from "./Login";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers } from "@fortawesome/free-solid-svg-icons";
+
 //const ORI_URL = "https://strangers-things.herokuapp.com/api/";
 //const COHORT =
 // "https://strangers-things.herokuapp.com/api/2209-ftb-ET-WEB-AM/posts";
@@ -14,6 +17,7 @@ const App = () => {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const [token, setToken] = useState(null);
+  const element = <FontAwesomeIcon icon={faUsers} />;
 
   const fetchPosts = () => {
     fetch(
@@ -69,12 +73,17 @@ const App = () => {
     <div>
       {user._id ? (
         <div>
-          Ciao {user.username}! <button onClick={logout}>Logout</button>
+          <h3> Hey welcome {user.username}!</h3>
+          <button onClick={logout}>Logout</button>
         </div>
       ) : null}
+      <header>
+        <h1>
+          Strangers Things&nbsp;
+          <FontAwesomeIcon className="icon" icon={faUsers} />
+        </h1>
+      </header>
 
-      <h1>Strangers Things</h1>
-      <i class="fas fa-cloud"></i>
       <nav>
         <Link to="/posts">Posts ({posts.length})</Link>
         <Link to="/login">Login</Link>
@@ -89,9 +98,8 @@ const App = () => {
           <Login exchangeTokenForUser={exchangeTokenForUser} />
         </div>
       ) : null}
-
       <Routes>
-        <Route path="/posts" element={<Posts posts={posts} />} />
+        <Route path="/posts" element={<Posts posts={posts} token={token} />} />
         <Route path="/login" element={<div>Login</div>} />
         <Route path="/register" element={<div>Register</div>} />
       </Routes>
@@ -105,3 +113,4 @@ root.render(
     <App />
   </HashRouter>
 );
+ReactDOM.render(element, document.body);

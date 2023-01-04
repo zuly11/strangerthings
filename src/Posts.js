@@ -1,13 +1,19 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
-import { createPost } from "./Create";
+
+//import { createPost } from "./Create";
 
 const Posts = (props) => {
   const posts = props.posts;
+  const token = props.token;
   return (
     <div>
       <h1>Posts</h1>
-      <button onClick={createPost}>Create Post</button>
+      <form></form>
+      <p>Create a post here:</p>
+
+      <button onClick={() => createPost(token)}>Create Post</button>
+
       <ul>
         {posts.map((post) => {
           console.log(post);
@@ -35,7 +41,7 @@ const Posts = (props) => {
   );
 };
 
-/*export const createPost = (token) => {
+export const createPost = (token) => {
   fetch("https://strangers-things.herokuapp.com/api/2209-FTB-ET-WEB-AM/posts", {
     method: "POST",
     headers: {
@@ -56,6 +62,6 @@ const Posts = (props) => {
       console.log(result);
     })
     .catch(console.error);
-};*/
+};
 
 export default Posts;
